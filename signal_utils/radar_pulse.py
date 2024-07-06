@@ -33,7 +33,7 @@ def generate_filtered_pulse(fc: float, num_taps: int, seq: NDArray[np.int_], sam
     #pulse = np.append(pulse, np.zeros([pulse_buffer]))
 
     w = blackman_nuttall_window(num_taps)
-    lpf = create_fir_filter(fc, w)
+    lpf = create_fir_filter(fc/sample_rate, w)
 
     pulse_filt = np.convolve(pulse, lpf[::-1], "same")
 
