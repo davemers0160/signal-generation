@@ -20,16 +20,24 @@ register_plotly_resampler(mode='auto')  # improves plotly scalability
 matplotlib.use("agg")  # limit matplotlib to png backend
 
 #make json serializable version of original send_bytes_response
-def send_bytes_response(pulse_bytes: bytes, prefix: str):
+def send_bytes_response(pulse_bytes: NDArray[np.int16], prefix: str):
     # get current time for file naming
     now = datetime.now()
     formatted_time = now.strftime("%Y%m%d_%H%M%S")
+    filename = f"{prefix}_{formatted_time}.sc16"
 
     encode_bytes = base64.b64encode(pulse_bytes).decode('utf-8')
     response = { #create a dictionary with needed contents 
-        'content': encode_bytes,
-        'filename': f"{prefix}_{formatted_time}.sc16",
+        'content': list(pulse_bytes), #encode_bytes,
+        'filename': filename,
     }
+
+    # response = Response(pulse_bytes, mimetype='application/octet-stream')
+    # response.headers['Content-Disposition'] = 'attachment; filename=filename'
+
+    with open(filename, 'wb') as file_id:
+        pulse_bytes.tofile(file_id)
+
     return response
 
 def send_interactive_graph(pulse: NDArray[np.complex64], t: NDArray[np.float16], abbr: str):
@@ -102,7 +110,7 @@ def determine_cam_eye(view):
         return dict(x=0., y=0., z=2.5)
 
  
-def output_cases(pulse: NDArray[np.complex64], form: str, tstop: float, abbr: str, axes: str, num_pulses: int, view: str) -> Response:
+def output_cases(pulse: NDArray[np.complex128], form: str, tstop: float, abbr: str, axes: str, num_pulses: int, view: str) -> Response:
     if form == "sc16":
         pulse_bytes = get_iq_bytes(pulse)
         return send_bytes_response(pulse_bytes, abbr)

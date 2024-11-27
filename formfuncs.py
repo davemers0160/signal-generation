@@ -65,7 +65,7 @@ bpsk_extras = html.Div([
             dbc.Row([
                 dbc.Col([
                     html.Label("Cutoff Frequency (Hz):"),
-                    dbc.Input(value=20, id="cutoff_freq", style={'marginBottom': '15px'})
+                    dbc.Input(value=10000000, id="cutoff_freq", style={'marginBottom': '15px'})
                 ]),
                 dbc.Col([
                     html.Label("Number of Taps:"),

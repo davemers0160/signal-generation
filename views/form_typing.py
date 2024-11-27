@@ -22,5 +22,5 @@ def convert_bpsk_types(data):
     data["bit_length"] = float(data["bit_length"])
     data["num_pulses"] = int(data["num_pulses"])
     data["pulse_reps"] = float(data['pulse_reps'])
-    data["cutoff_freq"] = int(data["cutoff_freq"])
+    data["cutoff_freq"] = float(data["cutoff_freq"])
     data["num_taps"] = int(data["num_taps"])

@@ -133,3 +133,5 @@ cython_debug/
 .idea/
 
 requirements-dev.txt
+
+*.sc16
