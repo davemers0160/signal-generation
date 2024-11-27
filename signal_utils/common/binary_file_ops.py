@@ -39,8 +39,8 @@ def interleave_iq(data: NDArray[np.complex128]) -> NDArray[np.int16]:
 def get_iq_bytes(data: NDArray[np.complex128]) -> bytes:
     data_flat = interleave_iq(data)
 
-    return data_flat.tobytes()
-    # return data_flat
+    # return data_flat.tobytes()
+    return data_flat
 
 def write_binary_iq_data(filename: Path, data: NDArray[np.complex64]) -> None:
     data_flat = interleave_iq(data)
