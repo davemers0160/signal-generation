@@ -46,6 +46,18 @@ def generate_filtered_pulse(fc: float, num_taps: int, seq: NDArray[np.int_], sam
 
     return pulse_filt
 
+def filter_signal(pulse: NDArray[np.complex128], fc: float, num_taps: int, sample_rate: int):
+    w = blackman_nuttall_window(num_taps)
+    lpf = create_fir_filter(fc/sample_rate, w)
+
+    pulse_filt = np.convolve(pulse, lpf[::-1], "same")
+
+    # normalize the pulse
+    pulse_max = np.max(np.abs(pulse_filt))
+    pulse_filt = pulse_filt/pulse_max
+
+    return pulse_filt
+
 def generate_pulse(seq: NDArray[np.int_], sample_rate: int, bit_length: float, pri: float, num_pulses: int) -> NDArray[np.complex64]:
     samples_per_pulse = int(sample_rate * pri)
 

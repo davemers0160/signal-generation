@@ -63,6 +63,15 @@ def generate_fbpsk(fc: float, num_taps: int, num_bits: int, sample_rate: int, bi
     # pulse could either be generate_bpsk or generate_lfm
     return su.radar_pulse.generate_filtered_pulse(fc, num_taps, seq, sample_rate, bit_length, pri, num_pulses)
 
+def generate_rand_sequence(sequence_type: str, num_bits: int):
+    if sequence_type == 'mls':
+        taps = random_tap_sequence(num_bits)
+        seq = maximal_length_sequence(num_bits, np.array(taps))
+    else:
+        seq = barker_code(num_bits)
+
+    return seq
+
 def maximal_length_sequence(num_bits: int, taps: NDArray[np.int_]) -> NDArray[np.int_]:
 
     register = np.zeros([num_bits])
